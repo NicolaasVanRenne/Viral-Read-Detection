@@ -1,0 +1,38 @@
+# Run cellranger v7.1.0
+cellranger count --id=sample001 \
+    --transcriptome=/scratch/antwerpen/208/vsc20830/ref_genome/refdata-gex-GRCh38-2020-A \
+    --fastqs=/scratch/antwerpen/208/vsc20830/fastq/SRR28562212 \
+    --sample=CHB20 \
+    --localcores=28 \
+    --localmem=112
+
+#NOTES for cellranger options
+#'--id' sets output dir
+#'--sample' contains the filename in this format: 'CHB20' for 'CHB20_S1_L001_R1_001.fastq.gz
+
+# Sample identifier key 
+##################################
+#"sample001","SRR28562212","CHB20"
+#"sample002","SRR28562213","CHB14"
+#"sample003","SRR28562214","CHB13"
+#"sample004","SRR28562215","CHB9" 
+#"sample005","SRR28562216","CHB8" 
+#"sample006","SRR28562227","CHB7" 
+#"sample007","SRR28562238","CHB5" 
+#"sample008","SRR28562246","FC9"  
+#"sample009","SRR28562248","FC6"  
+#"sample010","SRR28562249","CHB4" 
+#"sample011","SRR28562250","FC5"  
+#"sample012","SRR28562251","FC4"  
+#"sample013","SRR28562252","FC3"  
+#"sample014","SRR28562253","FC2"  
+#"sample015","SRR28562254","FC1"  
+#"sample016","SRR28562255","CHB31"
+#"sample017","SRR28562256","CHB30"
+#"sample018","SRR28562257","CHB28"
+#"sample019","SRR28562258","CHB24"
+#"sample020","SRR28562259","CHB23"
+#"sample021","SRR28562260","CHB3" 
+#"sample022","SRR28562261","CHB2" 
+#"MISSING_SRA","SRR28562247","FC8"
+
