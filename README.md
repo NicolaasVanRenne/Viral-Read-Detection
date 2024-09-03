@@ -1,6 +1,8 @@
 # Viral-Read-Detection
 using INVADEseq to detect viral reads from scRNA-seq data
 
+### run_cellranger.pbs
+code to obtain cellranger output files for a sample starting from the .fastq sequencing files
 
 ### pathseq_process.pbs: 
 This will process subfolders of the raw_data_folder where cellranger output should be located. Output will take the names of these subfolders.
