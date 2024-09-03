@@ -25,7 +25,7 @@
 	visualization.dimensions = 30    #  uses the first x dimensions for the dimensionality reduction plot
 	PCA.dimensions = 30              #  uses the first x dimensions for PCA reduction	
 	
-	FindCluster.resolution = 1.0     # 2.0 for harmony is a good start for large data sets. 0.4 is a good start for small data sets. Increase for more clusters, decrease for less clusters
+	FindCluster.resolution = 1.0     # set resolution of clustering
 
 	seed = 18101983 # set seed for reproducibility
 	set.seed(seed)
@@ -33,6 +33,7 @@
 		
 # load single cell data 
 	#note: the directory structure for sample CHB20 should be "C://your_working_directory/scRNAseq_data/Narmada2024/CHB20" but feel free to adapt
+	#note: for each sample a subdirectory containing cellranger output (i.e. barcodes.tsv.gz, features.tsv.gz and matrix.mtx.gz)
 	#Create sample name vector and data directory vector
 	sample.name.vector  <- c("CHB20","CHB14","CHB13","CHB9","CHB8","CHB7","CHB5","FC9","FC6","CHB4","FC5","FC4","FC3","FC2","FC1","CHB31","CHB30","CHB28","CHB24","CHB23","CHB3","CHB2") #this will be orig.ident in meta.data
 	data.dir.vector     <- c("CHB20","CHB14","CHB13","CHB9","CHB8","CHB7","CHB5","FC9","FC6","CHB4","FC5","FC4","FC3","FC2","FC1","CHB31","CHB30","CHB28","CHB24","CHB23","CHB3","CHB2") # directories where the data is to be found
