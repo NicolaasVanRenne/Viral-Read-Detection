@@ -21,4 +21,4 @@ Code to reproduce the seurat object. The processed seurat object can be download
 
 
 # Reference
-When using this code, please cite the INVADEseq authors: Galeano-Niño et al., Nature 2022
+When using this code, please cite Van Renne et al. 2024 PLoS One (in press) and the INVADEseq authors: Galeano-Niño et al., 2022 Nature. 
