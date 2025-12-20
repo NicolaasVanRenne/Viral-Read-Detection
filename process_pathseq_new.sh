@@ -1,0 +1,80 @@
+#I dont know why but suddenly --microbe-fasta doesnt work anymore and should be replaced by --microbe-dict
+
+echo "This will process subfolders of the raw_data_folder where cellranger output should be located. Output will take the names of these subfolders."
+echo "This script was adapted from Visium_pipeline.sh and uses INVADEseq.py"
+echo "These files were retrieved from the INVADEseq GitHub: https://github.com/FredHutch/Galeano-Nino-Bullman-Intratumoral-Microbiota_2022/"
+echo "When using this, please cite the INVADEseq authors: Galeano-NiÃ±o et al., Nature 2022"
+echo "The pathseq reference database can be found on https://console.cloud.google.com/storage/browser/gatk-best-practices/pathseq/resources"
+
+#load necessary modules
+	#ml GATK/4.2.4.1-GCCcore-10.2.0-Java-1.8
+	ml GATK/4.2.0.0-GCCcore-10.2.0-Java-1.8	
+	#ml Python
+	ml Pysam
+
+#set data folders
+	raw_data_folder=/mnt/bctl/nvan0112/data_repo/a003_chen/cellranger # folder containing cellranger output files (with each sample a separate subfolder) 
+	root=/mnt/bctl/nvan0112/aura/output/scrna_seq # working directory
+	pathseqdb=/mnt/bctl/nvan0112/data_repo/ref_genome/pathseq # Pathseq database (can be downloaded from https://console.cloud.google.com/storage/browser/gatk-best-practices/pathseq/resources
+
+#algorithm	
+	cd ${root}
+	cd ${raw_data_folder}
+	
+	
+	# PathSeq pipeline
+	outpath=${root}/pathseq
+	mkdir ${outpath}
+	
+	# PathSeq process # Please adjust "-Xmx750g" based on the memory you want to use. Adjust --min-score-identity and --min-clipped-read-length based on your samples
+	# 
+	for folder in *
+	do
+	folder_name=${folder##*/}
+	file=${folder}/outs/possorted_genome_bam.bam
+	samplename=${folder_name}
+	echo ${samplename}
+	gatk --java-options "-Xmx112g" PathSeqPipelineSpark \
+	    --input ${file} \
+	    --filter-bwa-image ${pathseqdb}/pathseq_host.fa.img \
+	    --kmer-file ${pathseqdb}/pathseq_host.bfi \
+	    --min-clipped-read-length 31 \
+	    --microbe-dict ${pathseqdb}/pathseq_microbe.dict \
+	    --microbe-bwa-image ${pathseqdb}/pathseq_microbe.fa.img \
+	    --taxonomy-file ${pathseqdb}/pathseq_taxonomy.db \
+	    --output ${outpath}/${samplename}.pathseq.complete.bam \
+	    --scores-output ${outpath}/${samplename}.pathseq.complete.csv \
+	    --is-host-aligned false \
+	    --filter-duplicates false \
+	    --min-score-identity .7
+	done
+
+	    ###this argument was removed### --microbe-fasta ${pathseqdb}/pathseq_microbe.fa \
+	    ###and replaced by### --microbe-dict ${pathseqdb}/pathseq_microbe.dict \
+	
+	# Python script to generate bacteria matrix
+	bam_path=${root}/fastq/current
+	pathseq_path=${root}/pathseq
+	out_path=${root}/python
+	mkdir ${out_path}
+	cd ${bam_path}
+	
+	for each_sample in *
+	do
+	echo ${each_sample}
+	python /mnt/bctl/nvan0112/progra/Viral-Read-Detection/INVADEseq.py \
+	${bam_path}/${each_sample}/outs/possorted_genome_bam.bam \
+	${each_sample} \
+	${bam_path}/${each_sample}/outs/filtered_feature_bc_matrix/barcodes.tsv.gz \
+	${pathseq_path}/${each_sample}.pathseq.complete.bam \
+	${pathseq_path}/${each_sample}.pathseq.complete.csv \
+	${out_path}/${each_sample}.gex.filtered_matrix.readname \
+	${out_path}/${each_sample}.gex.filtered_matrix.unmap_cbub.bam \
+	${out_path}/${each_sample}.gex.filtered_matrix.unmap_cbub.fasta \
+	${out_path}/${each_sample}.gex.filtered_matrix.list \
+	${out_path}/${each_sample}.gex.raw.filtered_matrix.readnamepath \
+	${out_path}/${each_sample}.gex.filtered_matrix.genus.cell \
+	${out_path}/${each_sample}.gex.filtered_matrix.genus.csv \
+	${out_path}/${each_sample}.gex.filtered_matrix.validate.csv
+	done
+
