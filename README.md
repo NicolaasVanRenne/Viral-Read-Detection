@@ -4,7 +4,7 @@ using INVADEseq to detect viral reads from scRNA-seq data
 ### run_cellranger.pbs
 code to obtain cellranger output files for a sample starting from the .fastq sequencing files
 
-### pathseq_process.pbs: 
+### pathseq_process.pbs or pathseq_process_new.sh: 
 This will process subfolders of the raw_data_folder where cellranger output should be located. Output will take the names of these subfolders.
 This script was adapted from Visium_pipeline.sh and uses INVADEseq.py.
 
