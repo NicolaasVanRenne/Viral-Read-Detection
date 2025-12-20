@@ -53,7 +53,8 @@ echo "The pathseq reference database can be found on https://console.cloud.googl
 	    ###and replaced by### --microbe-dict ${pathseqdb}/pathseq_microbe.dict \
 	
 	# Python script to generate bacteria matrix
-	bam_path=${root}/fastq/current
+	#bam_path=${root}/fastq/current
+	bam_path=${raw_data_folder}
 	pathseq_path=${root}/pathseq
 	out_path=${root}/python
 	mkdir ${out_path}
